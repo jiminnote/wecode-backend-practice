@@ -7,9 +7,8 @@ from movies.models import Movie, Actor
 
 class ActorView(View):
     def get(self, request):
-        actors = Actor.objects.all()
         results=[]
-        for actor in actors:
+        for actor in Actor.objects.all():
             results.append(
             {
                 "name" : actor.first_name + actor.last_name,
@@ -20,14 +19,15 @@ class ActorView(View):
 
 class MovieView(View):
     def get(self, request):
-        movies = Movie.objects.all()
         results=[]
-        for movie in movies:
+        for movie in Movie.objects.all():
             results.append(
             {
                 "title" : movie.title,
                 "running time" : movie.running_time,
-                "actors" : [(actor.first_name + actor.last_name) for actor in movie.actors.all()]
+                "actors" :  [movie.first_name + movie.last_name for movie in movie.actor_set.all()]
+               
             }
         )
         return JsonResponse({'result':results}, status=200)
+    

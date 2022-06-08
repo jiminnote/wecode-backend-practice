@@ -12,12 +12,9 @@ class Actor(models.Model):
         return self.first_name + self.last_name
 
 class Movie(models.Model):
-    
     title = models.CharField(max_length=45)
     release_date = models.DateField()
     running_time=models.IntegerField()
-    actors=models.ManyToManyField('Actor')
-
     
     
     class Meta:

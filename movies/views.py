@@ -12,8 +12,8 @@ class ActorView(View):
         for actor in actors:
             results.append(
             {
-                "name" : actor.first_name + ' ' + actor.last_name,
-                "movie list" : [{"movie" : movie.title} for movie in actor.movie.all()]
+                "name" : actor.first_name + actor.last_name,
+                "movie list" : [ movie.title for movie in actor.movies.all()]
             }
         )
         return JsonResponse({'result':results}, status=200)
@@ -26,7 +26,8 @@ class MovieView(View):
             results.append(
             {
                 "title" : movie.title,
-                "running time" : movie.running_time
+                "running time" : movie.running_time,
+                "actors" : [(actor.first_name + actor.last_name) for actor in movie.actors.all()]
             }
         )
         return JsonResponse({'result':results}, status=200)

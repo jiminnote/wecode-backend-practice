@@ -14,7 +14,7 @@ class MainCategory(models.Model):
         
 class Subcategory(models.Model):
     sub_category_name = models.CharField(max_length=50)
-    Main_Category     = models.ForeignKey("Maincategory",on_delete=models.CASCADE)
+    main_Category     = models.ForeignKey("Maincategory",on_delete=models.CASCADE)
     
     class Meta:
      db_table = 'sub_categories'
@@ -22,10 +22,10 @@ class Subcategory(models.Model):
 class Product(TimeStampModel):
     sub_category  = models.ForeignKey('Subcategory', on_delete=models.CASCADE)
     name          = models.CharField(max_length=50)
-    ontents       = models.TextField()
+    contents      = models.TextField()
     
     class Meta:
-     db_table='products'
+     db_table = 'products'
 
 class Productoption(TimeStampModel):
     products         = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -36,15 +36,15 @@ class Productoption(TimeStampModel):
     size_contents    = models.TextField()
     
     class Meta:
-        db_table='product_options'
+        db_table = 'product_options'
 
 class Productfeature(models.Model):
-    product  = models.ForeignKey("Product",related_name='Products_feature', on_delete=models.CASCADE)    
+    product  = models.ForeignKey("Product", related_name='Products_feature', on_delete=models.CASCADE)    
     feature  = models.ForeignKey("Feature", on_delete=models.CASCADE)  
     content  = models.TextField()
     
     class Meta:
-         db_table='products_features'
+         db_table = 'products_features'
          
 
 class Feature(TimeStampModel):
@@ -54,7 +54,7 @@ class Feature(TimeStampModel):
         db_table = 'features'
 
 class Recommend(TimeStampModel):
-    reference_product = models.ForeignKey("Product",related_name='recommend_products', on_delete=models.CASCADE)
+    reference_product = models.ForeignKey("Product", related_name='recommend_products', on_delete=models.CASCADE)
     recommend_product = models.ForeignKey("Product", related_name='reference_products', on_delete=models.CASCADE)   
     
     class Meta:

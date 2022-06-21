@@ -9,7 +9,7 @@ class Cart(models.Model):
     product_option_id = models.ForeignKey("product.Productoption", on_delete=models.CASCADE)
     
     class Meta:
-     db_table='carts'
+     db_table = 'carts'
      
 class Order(TimeStampModel):
     order_number = models.CharField(max_length=50)
@@ -19,7 +19,7 @@ class Order(TimeStampModel):
     status_id    = models.ForeignKey("Status", on_delete=models.CASCADE)
     
     class Meta:
-     db_table='orders'
+     db_table = 'orders'
     
     def __str__(self):
         return self.order_number
@@ -31,7 +31,7 @@ class Status(models.Model):
         db_table = 'statuses'
         
 class Orderitem(models.Model):
-    order_id          = models.ForeignKey("Order", on_delete=models.CASCADE)
+    order_id          = models.ForeignKey("Order", on_delete = models.CASCADE)
     product_option_id = models.ForeignKey("product.Product", on_delete = models.CASCADE)
     quantity          = models.IntegerField()
     

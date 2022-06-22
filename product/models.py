@@ -20,9 +20,10 @@ class Subcategory(models.Model):
         db_table = 'sub_categories'
      
 class Product(TimeStampModel):
-    sub_category  = models.ForeignKey('Subcategory', on_delete = models.CASCADE)
-    name          = models.CharField(max_length = 50)
-    contents      = models.TextField()
+    sub_category        = models.ForeignKey('Subcategory', on_delete = models.CASCADE)
+    name                = models.CharField(max_length = 50)
+    contents            = models.TextField()
+    additinal_image_url = models.URLField()
     
     class Meta:
         db_table = 'products'

@@ -1,6 +1,6 @@
 from django.db import models
 
-from core.models      import TimeStampModel
+from core.models import TimeStampModel
 
 # Create your models here.
 class Cart(models.Model):

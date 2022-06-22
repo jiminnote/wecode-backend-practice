@@ -1,8 +1,7 @@
-from django.db        import models
+from django.db import models
 
-from core.models      import TimeStampModel
+from core.models import TimeStampModel
 
-# Create your models here.
 class MainCategory(models.Model):
     name = models.CharField(max_length = 50)
     
@@ -24,6 +23,8 @@ class Product(TimeStampModel):
     name                 = models.CharField(max_length = 50)
     content              = models.TextField()
     additional_image_url = models.URLField()
+    additional_name      = models.CharField(max_length = 50)
+    additional_content   = models.TextField()
     
     class Meta:
         db_table = 'products'

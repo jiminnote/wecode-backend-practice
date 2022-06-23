@@ -13,18 +13,31 @@ class MainCategory(models.Model):
         
 class Subcategory(models.Model):
     name          = models.CharField(max_length = 50)
-    main_category = models.ForeignKey("Maincategory",on_delete = models.CASCADE)
     
     class Meta:
         db_table = 'sub_categories'
+        
+class Mainsubcategory(models.Model):
+    sub_category  = models.ForeignKey("Subcategory",on_delete = models.CASCADE)
+    main_category = models.ForeignKey("MainCategory",on_delete = models.CASCADE)
+
+    class Meta:
+        db_table = 'mainsub_categories'
+        
+class Category(models.Model):
+    name              = models.CharField(max_length = 50)
+    main_sub_category = models.ForeignKey("Mainsubcategory",on_delete = models.CASCADE)
+    
+    class Meta:
+        db_table = 'categories'
      
 class Product(TimeStampModel):
-    sub_category         = models.ForeignKey('Subcategory', on_delete = models.CASCADE)
+    category             = models.ForeignKey('Category', on_delete = models.CASCADE,null=True)
     name                 = models.CharField(max_length = 50)
     content              = models.TextField()
     additional_image_url = models.URLField()
-    additional_name      = models.CharField(max_length = 50)
-    additional_content   = models.TextField()
+    additional_name      = models.CharField(max_length = 50,null=True)
+    additional_content   = models.TextField(null=True)
     
     class Meta:
         db_table = 'products'
@@ -35,7 +48,7 @@ class Productoption(TimeStampModel):
     image_url        = models.URLField()
     price            = models.DecimalField(max_digits = 10, decimal_places = 3)
     is_include_pump  = models.BooleanField(default = False)
-    content          = models.TextField()
+    content          = models.TextField(null=True)
     
     class Meta:
         db_table = 'product_options'
@@ -49,7 +62,6 @@ class Productfeature(models.Model):
     class Meta:
         db_table = 'products_features'
          
-
 class Feature(TimeStampModel):
     name = models.CharField(max_length = 50)
     

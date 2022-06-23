@@ -13,13 +13,25 @@ class MainCategory(models.Model):
         
 class Subcategory(models.Model):
     name          = models.CharField(max_length = 50)
-    main_category = models.ForeignKey("Maincategory",on_delete = models.CASCADE)
     
     class Meta:
         db_table = 'sub_categories'
+class Mainsub(models.Model):
+    sub_category  = models.ForeignKey("Subcategory",on_delete = models.CASCADE)
+    main_category = models.ForeignKey("MainCategory",on_delete = models.CASCADE)
+
+    class Meta:
+        db_table = 'mainsub_categories'
+        
+class Category(models.Model):
+    name     = models.CharField(max_length = 50)
+    category = models.ForeignKey("Mainsub",on_delete = models.CASCADE)
+    
+    class Meta:
+        db_table = 'categories'
      
 class Product(TimeStampModel):
-    sub_category         = models.ForeignKey('Subcategory', on_delete = models.CASCADE)
+    category             = models.ForeignKey('Category', on_delete = models.CASCADE,null=True)
     name                 = models.CharField(max_length = 50)
     content              = models.TextField()
     additional_image_url = models.URLField()

@@ -9,7 +9,7 @@ django.setup()
 from product.models import *  
 from users.models import *
 
-CSV_PATH_PRODUCTS='wesop_data/시트 5-Features.csv'
+CSV_PATH_PRODUCTS='wesop_data/시트 4-categories.csv'
 
 with open(CSV_PATH_PRODUCTS) as in_file:
         data_reader = csv.reader(in_file)
@@ -17,7 +17,9 @@ with open(CSV_PATH_PRODUCTS) as in_file:
         for row in data_reader:
             if row[1]:
                 names = row[1]
-                Feature.objects.create(name = names)
+            if row[2] :
+                a = row[2]
+            Category.objects.create(name = a, main_sub_category_id = names)
             # if row[2]:
             #     sub_menu_name = row[2]
             #     menu = MainCategory.objects.get(id=menu_id)

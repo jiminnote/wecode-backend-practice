@@ -1,7 +1,7 @@
 import json
+
 import bcrypt
 import jwt
-
 from django.http            import JsonResponse
 from django.views           import View
 from django.core.exceptions import ValidationError 
@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from core.utils     import login_decorator
 from core.validator import validate_email,validate_name,validate_password
 from wesop.settings import SECRET_KEY,ALGORITHM
-from users.models   import User, Skintype
+from users.models   import User
 
 class SignupView(View): 
     def post(self,request):
@@ -22,7 +22,7 @@ class SignupView(View):
             password   = data['password']
             
             if User.objects.filter(email = email).exists():
-             return JsonResponse({"message":"DUPLICATE_EMAIL"}, status = 400)
+                return JsonResponse({"message":"DUPLICATE_EMAIL"}, status = 400)
             
             validate_email(email)
             validate_name(first_name)

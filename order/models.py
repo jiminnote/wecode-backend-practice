@@ -35,7 +35,7 @@ class Orderitem(models.Model):
     product_option = models.ForeignKey("product.Product", on_delete = models.CASCADE)
     quantity       = models.IntegerField()
     
-    class Mta:
+    class Meta:
         db_table = 'order_itmes'
     
     

@@ -36,8 +36,8 @@ class Product(TimeStampModel):
     name                 = models.CharField(max_length = 50)
     content              = models.TextField()
     additional_image_url = models.URLField()
-    additional_name      = models.CharField(max_length = 50)
-    additional_content   = models.TextField()
+    additional_name      = models.CharField(max_length = 50,null=True)
+    additional_content   = models.TextField(null=True)
     
     class Meta:
         db_table = 'products'
@@ -48,7 +48,7 @@ class Productoption(TimeStampModel):
     image_url        = models.URLField()
     price            = models.DecimalField(max_digits = 10, decimal_places = 3)
     is_include_pump  = models.BooleanField(default = False)
-    content          = models.TextField()
+    content          = models.TextField(null=True)
     
     class Meta:
         db_table = 'product_options'

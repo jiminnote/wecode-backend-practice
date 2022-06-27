@@ -2,34 +2,62 @@ from django.http      import JsonResponse
 from django.views     import View
 from django.db.models import Q
 
-from .models import Product
+from .models import Product, Category
+
 class ProductListView(View):
-    def get(self, request):
-        main_category = request.GET.get('main_category')
-        category      = request.GET.get('category')
-        sort          = request.GET.get('sort', 'id')
-        limit         = int(request.GET.get('limit', 36))
-        offset        = int(request.GET.get('offset', 0))
+    def get(self, request, *args, **kwargs):
+        try:
+            main_category_id = request.GET.get('main_category')
+            category_id      = request.GET.get('category_id')
+            limit            = int(request.GET.get('limit', 20))
+            offset           = int(request.GET.get('offset', 0))
 
-        q = Q()
+            q = Q()
+
+            if category_id:
+                q &= Q(category__id = category_id)
+                
+            if main_category_id:
+                q &= Q(main_category__id = main_category_id)
             
-        if main_category:
-            q &= Q(sub_category__main_category_id=main_category)
+            products = Product.objects.filter(q)[offset:offset+limit]
 
-        if category:
-            q &= Q(category_id=category)
-
-        sort_type = {
-            'id'   : 'id',
-            'rand'  : '?'
-        }
-
-        products = Product.objects.select_related('category').filter(q).order_by(sort_type[sort])[offset:offset+limit]
-
-        product_list = [{
-            'id'        : product.id,
-            'name'      : product.name,
+            result = [
+                {
+                "category_id"        : product.category.id,
+                "category_name"      : product.category.name,
+                "products"           : 
+                    {
+                        "product_id"     : product.id,
+                        "product_name"   : product.name,
+                        "product_detail" : [
+                            {
+                                "product_option_id" : product_option.id,
+                                "size_mL"           : product_option.sizes_mL,
+                                "price"             : product_option.price,
+                                "image_url"         : product_option.image_url,
+                            } for product_option in product.productoption_set.all()
+                        ],
+                        "product_feature" : [
+                        {
+                            "feature" : feature.feature.name,
+                            "content" : feature.content
+                            }for feature in product.Products_feature.filter(is_addtional=False)
+                        ]
+                        }
+                } for product in products]
             
-        } for product in products]
+            return JsonResponse({"message" : result}, status = 200)
+        
+        except KeyError:
+            return JsonResponse({"message" : "KEY_ERROR"}, status = 400)
+        
+        except Category.DoesNotExist:
+            return JsonResponse({"message" : "NO_CATEGORY_FOUND"}, status = 400)
+        
+        
+        
+        
+        
 
-        return JsonResponse({'products_list':product_list}, status=200)
+        

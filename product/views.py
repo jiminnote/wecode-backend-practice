@@ -2,30 +2,29 @@ import json
 
 from django.http      import JsonResponse
 from django.views     import View
-from django.db.models import Max
 
-from product.models import Product, Productoption, Recommend, Productfeature, Feature
+from product.models import Product, Productoption, Recommend, Productfeature
 
 ## query paramete     request.GET['param']   reqeust.GET.get()
 ## path  params        
 class ProductdetailView(View):
     def get(self,request, product_id):
         try: 
-            product         = Product.objects.get(id=product_id)
-            product_option  = Productoption.objects.filter(product_id=product_id)
-            recommends      = Recommend.objects.filter(reference_product_id=product_id)
-            product_feature = Productfeature.objects.filter(product_id=product_id)
-            product_option  = [
+            products         = Product.objects.get(id=product_id)
+            product_options  = Productoption.objects.filter(product_id=product_id)
+            recommends       = Recommend.objects.filter(reference_product_id=product_id)
+            product_features = Productfeature.objects.filter(product_id=product_id)
+            product_options  = [
                 {
-                    'sizes_mL'        : product_options.sizes_mL,
-                    'image_url'       : product_options.image_url,
-                    'price'           : product_options.price,
-                    'is_include_pump' : product_options.is_include_pump,
-                    'content'         : product_options.content
-                } for product_options in product_option 
+                    'sizes_mL'        : product_option.sizes_mL,
+                    'image_url'       : product_option.image_url,
+                    'price'           : product_option.price,
+                    'is_include_pump' : product_option.is_include_pump,
+                    'content'         : product_option.content
+                } for product_option in product_options 
             ]
             
-            recommend = [
+            recommends = [
                 {
                     'name'              : recommend.recommend_product.name,
                     'product_id'        : recommend.recommend_product.productoption_set.first().product_id ,   
@@ -40,21 +39,21 @@ class ProductdetailView(View):
                     'content' : feature.content,
                     'feature' : feature.feature.name
                 }
-                for feature in product_feature
+                for feature in product_features
             ] 
                         
             products = {
-                'id'                   : product.id,
-                'name'                 : product.name,
-                'content'              : product.content,
-                # 'main_category'        : product.category.main_sub_category.main_category_set.name,       
-                'category'             : product.category.name,
-                'additional_name'      : product.additional_name,
-                'additional_content'   : product.additional_content,
-                'additional_image_url' : product.additional_image_url,
+                'id'                   : products.id,
+                'name'                 : products.name,
+                'content'              : products.content,
+                'main_category'        : products.category.main_sub_category.main_category.name,       
+                'category'             : products.category.name,
+                'additional_name'      : products.additional_name,
+                'additional_content'   : products.additional_content,
+                'additional_image_url' : products.additional_image_url,
                 'features'             : product_features,
-                'product_option'       : product_option,  
-                'recommend'            : recommend,
+                'product_option'       : product_options,  
+                'recommend'            : recommends,
                 } 
         
             

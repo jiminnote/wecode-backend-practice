@@ -1,6 +1,7 @@
 
 import json
 
+
 from django.http  import JsonResponse
 from django.views import View
 
@@ -8,7 +9,7 @@ from product.models import MainCategory
 
 class CategoryView(View):
     def get(self, request):
-        main_categories     = MainCategory.objects.all()
+        main_categories = MainCategory.objects.all()
 
         results = [
             {   
@@ -30,3 +31,10 @@ class CategoryView(View):
             ]
 
         return JsonResponse({'results' : results}, status = 200)
+
+        except KeyError:
+            return JsonResponse({"message" : 'KeyError'}, status = 400)  
+        
+        except Product.DoesNotExist:
+            return JsonResponse({"message": 'Not Found Data'}, status = 400)
+        

@@ -1,3 +1,4 @@
+
 import json
 
 from django.http  import JsonResponse
@@ -29,4 +30,3 @@ class CategoryView(View):
             ]
 
         return JsonResponse({'results' : results}, status = 200)
-    

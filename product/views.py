@@ -17,6 +17,7 @@ class ProductdetailView(View):
             product_features = Productfeature.objects.filter(product_id=product_id)
             product_options  = [
                 {
+                    'id'              : product_option.id,
                     'sizes_mL'        : product_option.sizes_mL,
                     'image_url'       : product_option.image_url,
                     'price'           : product_option.price,

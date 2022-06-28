@@ -24,12 +24,12 @@ class ProductListView(View):
 
             result = [
                 {
-                "category_id"        : product.category.id,
-                "category_name"      : product.category.name,
-                "products"           : 
+                "products" : 
                     {
                         "product_id"     : product.id,
                         "product_name"   : product.name,
+                        "category_id"    : product.category.id,
+                        "category_name"  : product.category.name,
                         "product_detail" : [
                             {
                                 "product_option_id" : product_option.id,

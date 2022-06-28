@@ -1,27 +1,27 @@
 import json
 
-from django.http            import JsonResponse
-from django.views           import View
+from django.http   import JsonResponse
+from django.views  import View
 
 from core.utils     import login_decorator
 from users.models   import User
 from order.models   import Cart
-from product.models import Product
+from product.models import Product, Productoption
 class CartView(View):
     @login_decorator
     def post(self, request):
         try:
             data           = json.loads(request.body)
-            user_id        = request.user
-            product_id     = Product.objects.get(id=data['product_id'])
+            user_id        = request.user.id
+            product_option_id   = Productoption.objects.get(id=data['product_option_id']).id
             quantity       = data['quantity']
             
-            if Cart.objects.filter(user=user_id, product=product_id).exists():
+            if Cart.objects.filter(user=user_id, product_option=product_option_id).exists():
                 return JsonResponse({'MESSAGE' : 'PRODUCT_ALREADY_EXIST'}, status=400)
                 
             Cart.objects.create(
-                user     = user_id,
-                product  = product_id,
+                user_id     = user_id,
+                product_option_id  = product_option_id,
                 quantity = quantity
             )
 
@@ -39,17 +39,16 @@ class CartView(View):
         
         result=[
            {
-             "name"      : cart.product_option.product.name,
-             "price"     : cart.product_option.price,
-             "product_id": cart.product_option.product.id,
-             "quantity"  : cart.quantity,
-             "cart_id"   : cart.id
+             "name"       : cart.product_option.product.name,
+             "price"      : cart.product_option.price,
+             "product_id" : cart.product_option.product.id,
+             "quantity"   : cart.quantity,
+             "cart_id"    : cart.id
             }
         for cart in carts
         ]
 
         return JsonResponse({'result': result}, status=200)
-
 
     @login_decorator
     def delete(self, request):
@@ -65,8 +64,6 @@ class CartView(View):
         Cart.objects.filter(user=request.user).delete()
         return JsonResponse({'MESSAGE':'ALL_DELETED'},status = 200)
     
-
-
     @login_decorator
     def patch(self, request):
         try:
@@ -75,7 +72,6 @@ class CartView(View):
             cart_id       = data['cart_id']
             cart          = Cart.objects.get(id=cart_id, user_id=request.user)
             cart.quantity = int(quantity)
-
             cart.save()
             
             return JsonResponse({'MESSAGE':'SUCCESS'}, status=201)

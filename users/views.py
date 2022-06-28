@@ -69,9 +69,12 @@ class MypageView(View):
         user = request.user
         
         user_info = {
-                "fullname" : user.lsat_name+user.lsat_name,
-                "email"    : user.email,
-                "password"    : user.point,
+            "id"        : user.id,
+            "lastname"  : user.last_name,
+            "firstname" : user.first_name,
+            "fullname"  : user.last_name+user.first_name,
+            "email"     : user.email,
+            "password"  : user.password,
             }
             
         return JsonResponse({'user_info' : user_info}, status = 200)

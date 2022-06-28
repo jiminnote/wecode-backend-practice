@@ -17,7 +17,7 @@ class CartView(View):
             quantity          = data['quantity']
         
             if Cart.objects.filter(user=user_id, product_option=product_option_id).exists():
-                return JsonResponse({'MESSAGE' : 'PRODUCT_ALREADY_EXIST'}, status=400)
+                return JsonResponse({'message' : 'PRODUCT_ALREADY_EXIST'}, status=400)
                 
             Cart.objects.create(
                 user_id            = user_id,
@@ -25,13 +25,13 @@ class CartView(View):
                 quantity           = quantity
             )
 
-            return JsonResponse({'MESSAGE' : 'SUCCESS'}, status= 201)
+            return JsonResponse({'message' : 'SUCCESS'}, status= 201)
 
         except KeyError: 
-            return JsonResponse({'MESSAGE' : 'KEY_ERROR'}, status= 400)
+            return JsonResponse({'message' : 'KEY_ERROR'}, status= 400)
 
         except Productoption.DoesNotExist: 
-            return JsonResponse({'MESSAGE' : 'DOES_NOT_EXIST'}, status = 401)
+            return JsonResponse({'message' : 'DOES_NOT_EXIST'}, status = 401)
 
     @login_decorator
     def get(self, request):
@@ -57,7 +57,7 @@ class CartView(View):
         cart_id = request.GET.get('cart_id')
         
         if not Cart.objects.filter(user=request.user).exists(): 
-            return JsonResponse({'MESSAGE':'DOES_NOT_EXIST'}, status = 400)
+            return JsonResponse({'message':'DOES_NOT_EXIST'}, status = 400)
 
         cart = Cart.objects.filter(id=cart_id,user=user)
         
@@ -79,8 +79,8 @@ class CartView(View):
             cart.quantity = data['quantity']
             cart.save()
             
-            return JsonResponse({"quantity":cart.quantity}, status=200)
+            return JsonResponse({"message": "SUCCESS"}, status=200)
 
         except KeyError:
-            return JsonResponse({'MESSAGE':'KEY_ERROR'}, status=400)
+            return JsonResponse({'message':'KEY_ERROR'}, status=400)
 

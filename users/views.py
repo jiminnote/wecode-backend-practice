@@ -68,14 +68,14 @@ class MypageView(View):
     def post(self, request):
         data = json.loads(request.body)
         user = request.user
-        information = 'Nothing'
+        email = data['email']
+        
+        validate_email(email)
+        
+        user.email = email
+        user.save()
 
-        if data['email'] != '' :
-            information = data['email'] 
-            user.email = information if information != 'empty' else ''
-            user.save()
-
-        return JsonResponse({'MESSAGE': f'update {information}'}, status=200)
+        return JsonResponse({'MESSAGE': f'update {email}'}, status=200)
 
     
 

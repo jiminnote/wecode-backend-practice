@@ -37,11 +37,18 @@ class ProductdetailView(View):
             ]
             
             product_features = [
-                {
-                    'content' : feature.content,
-                    'feature' : feature.feature.name
+               { 
+                    'feature': [
+                        {
+                            'content' : feature.content,
+                            'feature' : feature.feature.name
+                    }for feature in product_features.filter(is_addtional=False)],
+                    'manual' :[ 
+                        {
+                            'content' : feature.content,
+                            'feature' : feature.feature.name
+                    }for feature in product_features.filter(is_addtional=True)]
                 }
-                for feature in product_features
             ] 
                         
             products = {

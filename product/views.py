@@ -52,6 +52,7 @@ class ProductListView(View):
         
         except KeyError:
             return JsonResponse({"message" : "KEY_ERROR"}, status = 400)
+        
         except Category.DoesNotExist:
             return JsonResponse({"message" : "NO_CATEGORY_FOUND"}, status = 400)
         

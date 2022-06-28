@@ -62,3 +62,20 @@ class SigninView(View):
         
         except KeyError: 
             return JsonResponse({"message":"KEY_ERROR"},status=400)
+
+class MypageView(View):
+    @login_decorator
+    def post(self, request):
+        data = json.loads(request.body)
+        user = request.user
+        information = 'Nothing'
+
+        if data['email'] != '' :
+            information = data['email'] 
+            user.email = information if information != 'empty' else ''
+            user.save()
+
+        return JsonResponse({'MESSAGE': f'update {information}'}, status=200)
+
+    
+

@@ -1,69 +1,40 @@
 
 import json
 
-from django.http      import JsonResponse
-from django.views     import View
 
-from product.models import Product, Productoption, Recommend, Productfeature
+from django.http  import JsonResponse
+from django.views import View
 
-## query paramete     request.GET['param']   reqeust.GET.get()
-## path  params        
-class ProductdetailView(View):
-    def get(self,request, product_id):
-        try: 
-            products         = Product.objects.get(id=product_id)
-            product_options  = Productoption.objects.filter(product_id=product_id)
-            recommends       = Recommend.objects.filter(reference_product_id=product_id)
-            product_features = Productfeature.objects.filter(product_id=product_id)
-            product_options  = [
-                {
-                    'sizes_mL'        : product_option.sizes_mL,
-                    'image_url'       : product_option.image_url,
-                    'price'           : product_option.price,
-                    'is_include_pump' : product_option.is_include_pump,
-                    'content'         : product_option.content
-                } for product_option in product_options 
+from product.models import MainCategory
+
+class CategoryView(View):
+    def get(self, request):
+        main_categories = MainCategory.objects.all()
+
+        results = [
+            {   
+                'main_category_id' : main_category.id,
+                'main_category'    : main_category.name,
+                'sub_category'     : [
+                    {
+                        'id'       : main_sub_category.sub_category.id,
+                        'name'     : main_sub_category.sub_category.name,
+                        'category' :[
+                            {   
+                                'id'  : category.id,
+                                'name': category.name
+                                    }for category in main_sub_category.category_set.all()
+                            ]
+                    } for main_sub_category in main_category.mainsubcategory_set.all()
+                ]
+                }for main_category in main_categories
             ]
-            
-            recommends = [
-                {
-                    'name'              : recommend.recommend_product.name,
-                    'product_id'        : recommend.recommend_product.productoption_set.first().product_id ,   
-                    'product_image_url' : recommend.recommend_product.productoption_set.first().image_url,
-                    'product_content'   : recommend.recommend_product.Products_feature.first().content,
-                    
-                } for recommend in recommends 
-            ]
-            
-            product_features = [
-                {
-                    'content' : feature.content,
-                    'feature' : feature.feature.name
-                }
-                for feature in product_features
-            ] 
-                        
-            products = {
-                'id'                   : products.id,
-                'name'                 : products.name,
-                'content'              : products.content,
-                'main_category'        : products.category.main_sub_category.main_category.name,       
-                'category'             : products.category.name,
-                'additional_name'      : products.additional_name,
-                'additional_content'   : products.additional_content,
-                'additional_image_url' : products.additional_image_url,
-                'features'             : product_features,
-                'product_option'       : product_options,  
-                'recommend'            : recommends,
-                } 
-        
-            
-            return JsonResponse({'product' : products}, status = 200)
-        
+
+        return JsonResponse({'results' : results}, status = 200)
+
         except KeyError:
             return JsonResponse({"message" : 'KeyError'}, status = 400)  
         
         except Product.DoesNotExist:
             return JsonResponse({"message": 'Not Found Data'}, status = 400)
         
-

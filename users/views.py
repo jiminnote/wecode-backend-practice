@@ -65,17 +65,16 @@ class SigninView(View):
 
 class MypageView(View):
     @login_decorator
-    def post(self, request):
-        data = json.loads(request.body)
+    def get(self,request):
         user = request.user
-        email = data['email']
         
-        validate_email(email)
-        
-        user.email = email
-        user.save()
-
-        return JsonResponse({'MESSAGE': f'update {email}'}, status=200)
+        user_info = {
+                "fullname" : user.lsat_name+user.lsat_name,
+                "email"    : user.email,
+                "password"    : user.point,
+            }
+            
+        return JsonResponse({'user_info' : user_info}, status = 200)
 
     
 

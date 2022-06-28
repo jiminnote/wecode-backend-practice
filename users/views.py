@@ -70,9 +70,9 @@ class MypageView(View):
         
         user_info = {
             "id"        : user.id,
-            "lastname"  : user.last_name,
-            "firstname" : user.first_name,
-            "fullname"  : user.last_name+user.first_name,
+            "last_name"  : user.last_name,
+            "first_name" : user.first_name,
+            "full_name"  : user.last_name+user.first_name,
             "email"     : user.email,
             "password"  : user.password,
             }

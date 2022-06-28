@@ -40,6 +40,7 @@ class ProductListView(View):
                         ],
                         "product_feature" : [
                         {
+                            "id"      : feature.feature.id,
                             "feature" : feature.feature.name,
                             "content" : feature.content
                             }for feature in product.Products_feature.filter(is_addtional=False)

@@ -39,11 +39,12 @@ class CartView(View):
         
         result=[
            {
-             "name"       : cart.product_option.product.name,
-             "price"      : cart.product_option.price,
-             "product_id" : cart.product_option.product.id,
-             "quantity"   : cart.quantity,
-             "cart_id"    : cart.id
+             "name"              : cart.product_option.product.name,
+             "price"             : cart.product_option.price,
+             "product_option_id" : cart.product_option.product.id,
+             "size_mL"           : cart.product_option.sizes_mL,
+             "quantity"          : cart.quantity,
+             "cart_id"           : cart.id
             }
         for cart in carts
         ]

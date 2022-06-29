@@ -62,3 +62,22 @@ class SigninView(View):
         
         except KeyError: 
             return JsonResponse({"message":"KEY_ERROR"},status=400)
+
+class UserView(View):
+    @login_decorator
+    def get(self,request):
+        user = request.user
+        
+        user_information = {
+            "id"         : user.id,
+            "last_name"  : user.last_name,
+            "first_name" : user.first_name,
+            "full_name"  : user.last_name+user.first_name,
+            "email"      : user.email,
+            "password"   : user.password,
+            }
+            
+        return JsonResponse({'user_information' : user_information}, status = 200)
+
+    
+

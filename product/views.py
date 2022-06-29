@@ -1,7 +1,7 @@
 import json
 
-from django.http  import JsonResponse
-from django.views import View
+from django.http      import JsonResponse
+from django.views     import View
 from django.db.models import Q
 
 from product.models import (
@@ -11,6 +11,7 @@ from product.models import (
 )
 
 from .models import Product, MainCategory
+
 class ProductListView(View):
     def get(self, request, *args, **kwargs):
         main_category_id = request.GET.get('main_category_id')
@@ -18,7 +19,9 @@ class ProductListView(View):
         sort             = request.GET.get('sort')
         limit            = int(request.GET.get('limit', 20))
         offset           = int(request.GET.get('offset', 0))
+        
         q = Q()
+        
         if category_id:
             q &= Q(category__id = category_id)
             
@@ -29,9 +32,9 @@ class ProductListView(View):
             'random' : '?'
         }
         
-        order_filed = sort_set.get(sort, 'id')
+        order_field = sort_set.get(sort, 'id')
+        products    = Product.objects.filter(q).order_by(order_field)[offset:offset+limit]
         
-        products = Product.objects.filter(q).order_by(order_filed)[offset:offset+limit]
         result = [
             {
                 "products" : 

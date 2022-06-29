@@ -42,7 +42,7 @@ class SignupView(View):
             return JsonResponse({'message' : e.message }, status = 400)    
 class SigninView(View):
     def post(self,request):
-        try:
+        try: 
             data     = json.loads(request.body)
             email    = data['email']
             password = data['password']
@@ -78,6 +78,36 @@ class UserView(View):
             }
             
         return JsonResponse({'user_information' : user_information}, status = 200)
+    
+    @login_decorator
+    def patch(self,request):
+        try:
+            data = json.loads(request.body) 
+            user = request.user
 
+            hashed_passsword = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
+
+            user.email      = data['email']
+            user.first_name = data['first_name']
+            user.last_name  = data['last_name']
+
+            validate_email(user.email)
+            validate_name(user.first_name) 
+            validate_name(user.last_name)
+            validate_password(data['password'])
+            
+            user.passwrod = hashed_passsword
+            
+            if User.objects.filter(email = user.email).exists():
+                    return JsonResponse({"message":"INVALID_USER"}, status = 401)    
+
+            user.save()
+
+            return JsonResponse({"full_name" :user.first_name+ user.last_name},status=200)
+        
+        except ValidationError:
+            return JsonResponse({'message' : 'aga'}, status = 401)
+
+        
     
 

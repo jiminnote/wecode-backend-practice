@@ -13,13 +13,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Skintype',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('skin_type', models.CharField(max_length=15, null=True)),
-            ],
-        ),
-        migrations.CreateModel(
             name='User',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
@@ -28,8 +21,7 @@ class Migration(migrations.Migration):
                 ('first_name', models.CharField(max_length=45)),
                 ('last_name', models.CharField(max_length=45)),
                 ('email', models.CharField(max_length=45, unique=True)),
-                ('password', models.CharField(max_length=200)),
-                ('skin_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.skintype')),
+                ('password', models.CharField(max_length=200))
             ],
             options={
                 'db_table': 'users',

@@ -18,6 +18,6 @@ from django.urls import path,include
 
 urlpatterns = [
     path('users',include('users.urls')),
-    path('product',include('product.urls'))
+    path('products',include('product.urls'))
     
 ]

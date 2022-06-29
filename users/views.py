@@ -103,7 +103,8 @@ class UserView(View):
 
             user.save()
 
-            return JsonResponse({"full_name" :user.first_name+ user.last_name},status=200)
+            return JsonResponse({"full_name" :user.last_name + user.first_name,
+                                 "id" : user.id },status=200)
         
         except ValidationError:
             return JsonResponse({'message' : 'aga'}, status = 401)

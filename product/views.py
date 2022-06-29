@@ -70,7 +70,7 @@ class ProductdetailView(View):
             product          = Product.objects.get(id=product_id)
             product_options  = product.productoption_set.all()
             recommends       = Recommend.objects.filter(reference_product_id=product_id)
-            product_features = product.Product_feature.all()
+            product_features = product.Products_feature.all()
             product_options  = [
                 {
                     'id'              : product_option.id,

@@ -42,7 +42,7 @@ class SignupView(View):
             return JsonResponse({'message' : e.message }, status = 400)    
 class SigninView(View):
     def post(self,request):
-        try:
+        try: 
             data     = json.loads(request.body)
             email    = data['email']
             password = data['password']
@@ -78,6 +78,36 @@ class UserView(View):
             }
             
         return JsonResponse({'user_information' : user_information}, status = 200)
+    
+    @login_decorator
+    def patch(self,request):
+        try:
+            user = request.user
+            data = json.loads(request.body) 
+            
+            first_name = data.get('first_name') if data.get('first_name') else user.first_name
+            last_name  = data.get('last_name') if data.get('last_name') else user.last_name
+            password   = data.get('password') 
 
+            validate_name(first_name) 
+            validate_name(last_name)
+            
+            user.first_name = first_name
+            user.last_name  = last_name
+            full_name       = user.last_name + user.first_name
+            
+            if password:
+                validate_password(password)
+                hashed_passsword = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
+                user.passwrod    = hashed_passsword
+
+            user.save()
+
+            return JsonResponse({"full_name" : full_name, "id" : user.id },status=200)
+         
+        except ValidationError as e :
+            return JsonResponse({'message' : e.message}, status = 400)
+
+        
     
 

@@ -85,8 +85,6 @@ class UserView(View):
             data = json.loads(request.body) 
             user = request.user
 
-            hashed_passsword = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
-
             user.email      = data['email']
             user.first_name = data['first_name']
             user.last_name  = data['last_name']
@@ -96,7 +94,7 @@ class UserView(View):
             validate_name(user.last_name)
             validate_password(data['password'])
             
-            user.passwrod = hashed_passsword
+            user.passwrod = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
             
             if User.objects.filter(email = user.email).exists():
                     return JsonResponse({"message":"INVALID_USER"}, status = 401)    
@@ -105,9 +103,9 @@ class UserView(View):
 
             return JsonResponse({"full_name" :user.last_name + user.first_name,
                                  "id" : user.id },status=200)
-        
-        except ValidationError:
-            return JsonResponse({'message' : 'aga'}, status = 401)
+         
+        except ValidationError as e :
+            return JsonResponse({'message' : e.message}, status = 401)
 
         
     

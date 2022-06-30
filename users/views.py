@@ -82,30 +82,31 @@ class UserView(View):
     @login_decorator
     def patch(self,request):
         try:
-            data = json.loads(request.body) 
             user = request.user
-
-            user.email      = data['email']
-            user.first_name = data['first_name']
-            user.last_name  = data['last_name']
-
-            validate_email(user.email)
-            validate_name(user.first_name) 
-            validate_name(user.last_name)
-            validate_password(data['password'])
+            data = json.loads(request.body) 
             
-            user.passwrod = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
+            first_name = data.get('first_name') if data.get('first_name') else user.first_name
+            last_name  = data.get('last_name') if data.get('last_name') else user.last_name
+            password   = data.get('password') 
+
+            validate_name(first_name) 
+            validate_name(last_name)
             
-            if User.objects.filter(email = user.email).exists():
-                    return JsonResponse({"message":"INVALID_USER"}, status = 401)    
+            user.first_name = first_name
+            user.last_name  = last_name
+            full_name       = user.last_name + user.first_name
+            
+            if password:
+                validate_password(password)
+                hashed_passsword = bcrypt.hashpw(data['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')
+                user.passwrod    = hashed_passsword
 
             user.save()
 
-            return JsonResponse({"full_name" :user.last_name + user.first_name,
-                                 "id" : user.id },status=200)
+            return JsonResponse({"full_name" : full_name, "id" : user.id },status=200)
          
         except ValidationError as e :
-            return JsonResponse({'message' : e.message}, status = 401)
+            return JsonResponse({'message' : e.message}, status = 400)
 
         
     

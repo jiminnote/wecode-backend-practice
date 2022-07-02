@@ -42,8 +42,8 @@
 <img width="1275" alt="image" src="https://user-images.githubusercontent.com/95075455/176987964-180782b8-7727-47cd-895a-4ded9b07a721.png">
 
 #### users
-- users.SignUpView : 회원 가입 기능
-- users.LogInView  : 로그인 기능
+- users.SignupView : 회원 가입 기능
+- users.SigninView  : 로그인 기능
 - users.MypageView : 회원 정보 조회 및 수정
 
 #### products

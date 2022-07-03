@@ -69,7 +69,7 @@
 ## Links
 
 -  프로젝트 회고
-  - [1차 프로젝트 회고록](velog 올리기)
+  - [1차 프로젝트 회고록](https://velog.io/@jiminnote/Wesop1%EC%B0%A8-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%ED%9A%8C%EA%B3%A0%EB%A1%9D#-1%EC%9D%B8-%EB%B0%B1%EC%97%94%EB%93%9C)
 
 - Repository
   - [프론트엔드](https://github.com/wecode-bootcamp-korea/34-1st-Wesop-frontend)

@@ -4,18 +4,12 @@
 
 #### 목적 : [Aesop](https://www.aesop.com/)을 클론 코딩하며 프론트엔드와 백엔드의 원활한 커뮤니케이션과 Django를 이용하여 가능한 Aesop 보유 기능을 구현하기위해 학습하는 것을 목표를 두고 있음.
 
-#### 개발 기간 : 2022년 6월 20일 ~ 2022년 7월 1일(총 11)
+#### 개발 기간 : 2022년 6월 20일 ~ 2022년 7월 1일(총 11일간)
 
 #### 개발 인원 :
 
 - Frontend : 서한샘, 박수연, 조예지, 홍희윤
 - Backend : 정지민(https://github.com/jiminnote)
-
-####  2차 프로젝트 발표 자료<br />
-  [PDF](public/readme/wesop%20%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C.pdf)
-  <br />
-  [Keynote](public/readme/wesop%20%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C.key)
-  <br />
 
 
 ## 핵심 기능 Key Feature
@@ -66,7 +60,7 @@
 
 ## Reference
 
-- [Aesop](https://www.aesop.com/)
+- [Aesop](https://www.skyscanner.co.kr/)
 - [unsplash.com](https://unsplash.com/)
 - [dbdiagram.io](https://dbdiagram.io/home)
 

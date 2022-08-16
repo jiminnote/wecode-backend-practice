@@ -1,6 +1,5 @@
-# Wescanner Client Project
 
-## 🌟 Wescanner Project Front Family
+## 🌟 Wescanner Project Family
 
 - F.E<br />
   우혜림
